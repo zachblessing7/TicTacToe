@@ -47,9 +47,19 @@
     padding: 20px;
 }
 
+.tic-tac-toe-image-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .tic-tac-toe-image {
     justify-content: center;
-    padding: 20px
+    padding: 20px;
+    max-width: 100%;
+    height: auto;
 }
 
 .sign-up-button-container {
