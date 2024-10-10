@@ -21,6 +21,9 @@ function Login() {
     // Ensure it exists in the DB
     
 
+    // Send User Object to backend
+    
+
     // Reset the form
     dispatch({type: UserActionTypes.RESET_FORM});
   }
