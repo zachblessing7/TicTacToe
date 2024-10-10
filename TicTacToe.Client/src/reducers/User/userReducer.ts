@@ -1,8 +1,8 @@
-import { User } from '../../models/User';
+import { UserViewModel } from '../../viewModels/UserViewModel';
 import { UserActionTypes } from './userActionTypes';
 
 // Define the initial state
-export const userInitialState: User = { userName: '' };
+export const userInitialState: UserViewModel = { id: 0, displayName: '' };
 
 // Define the actions
 type UserAction =
@@ -10,10 +10,10 @@ type UserAction =
   | { type: UserActionTypes.RESET_FORM };
 
 // Create the reducer function
-export const userReducer = (state: User, action: UserAction): User => {
+export const userReducer = (state: UserViewModel, action: UserAction): UserViewModel => {
   switch (action.type) {
     case UserActionTypes.SET_USER_NAME:
-      return { ...state, userName: action.payload };
+      return { ...state, displayName: action.payload };
     case UserActionTypes.RESET_FORM:
       return userInitialState;
     default:

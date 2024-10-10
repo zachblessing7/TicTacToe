@@ -1,6 +1,7 @@
 import '../css/index.css';
 import '../css/Login.css';
 import TicTacToeImage from '../assets/tictactoe.png';
+import config from '../config';
 import { useReducer, FormEvent } from 'react';
 import { userReducer, userInitialState } from '../reducers/User/userReducer';
 import { UserActionTypes } from '../reducers/User/userActionTypes';
@@ -10,23 +11,36 @@ function Login() {
   const navigate = useNavigate();
   const [user, dispatch] = useReducer(userReducer, userInitialState);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(`User Name ${user.userName}`);
-    // UpperCase UserName 
-    let upperUserName
-    upperUserName= user.userName.toUpperCase();
-    user.userName = upperUserName !== '' ? upperUserName : user.userName
-
-    // Ensure it exists in the DB
-    
-
+    console.log(`User Name ${user.displayName}`);
+  
+    let upperdisplayName = user.displayName.toUpperCase();
+    user.displayName = upperdisplayName !== '' ? upperdisplayName : user.displayName;
+  
     // Send User Object to backend
-    
-
+    try {
+      const response = await fetch(`${config.apiUrl}/api/v1.0/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('There was a problem with the fetch operation:', error);
+    }
+  
     // Reset the form
-    dispatch({type: UserActionTypes.RESET_FORM});
-  }
+    dispatch({ type: UserActionTypes.RESET_FORM });
+  };
 
   // If Signing Up Direct to the Sign Up Page
   const handleSignUp = () => {
@@ -54,10 +68,10 @@ function Login() {
               <label htmlFor="user-name-input">User Name: </label>
               <input
                 type="email"
-                name="userName"
+                name="displayName"
                 id="user-name-input"
-                placeholder='Username/Email'
-                value={user.userName}
+                placeholder='displayName/Email'
+                value={user.displayName}
                 onChange={(e) => dispatch({type: UserActionTypes.SET_USER_NAME, payload: e.target.value})} // Update state on input change
                 required />
             </div>
